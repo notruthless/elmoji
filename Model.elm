@@ -4,7 +4,9 @@ type Direction
     = TextToEmoji | EmojiToText
 
 type alias Model =
-    { currentText : String, direction: Direction }
+    { currentText : String,
+      direction: Direction,
+      selectedKey: String}
 
 defaultKey : String
 defaultKey =
@@ -12,4 +14,6 @@ defaultKey =
 
 init : Model
 init =
-    { currentText = "", direction = TextToEmoji }
+    { currentText = "",
+     direction = TextToEmoji,
+     selectedKey = defaultKey}

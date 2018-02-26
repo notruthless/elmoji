@@ -10,23 +10,24 @@ import EmojiConverter
 translateText : Model.Model -> String
 translateText model =
     if model.direction == Model.TextToEmoji then
-        EmojiConverter.textToEmoji Model.defaultKey model.currentText
+        EmojiConverter.textToEmoji model.selectedKey model.currentText
     else
-        EmojiConverter.emojiToText Model.defaultKey model.currentText
+        EmojiConverter.emojiToText model.selectedKey model.currentText
 
-renderKeys =
+renderKeys model =
     Html.div
         [ Html.Attributes.class "row" ]
-        (List.map (\emoji -> renderKey emoji) EmojiConverter.supportedEmojis)
+        (List.map (\emoji -> renderKey emoji model) EmojiConverter.supportedEmojis)
 
-renderKey emoji =
+renderKey emoji model =
     Html.div
         [ Html.Attributes.class "col s2 m1 emoji-size" ]
         [ Html.div
             [ Html.Attributes.classList
                 [ ("key-selector", True)
-                , ("is-selected", emoji == Model.defaultKey)
+                , ("is-selected", emoji == model.selectedKey)
                 ]
+            , Html.Events.onClick (Update.SetSelectedKey emoji)
             ]
             [ Html.text emoji]
         ]
@@ -89,6 +90,6 @@ view model =
             [ Html.h4
                 [ Html.Attributes.class "center" ]
                 [ Html.text "Select Your Key" ]
-            , renderKeys
+            , renderKeys model
             ]
         ]
