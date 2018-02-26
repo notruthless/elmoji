@@ -23,7 +23,11 @@ renderKey emoji =
     Html.div
         [ Html.Attributes.class "col s2 m1 emoji-size" ]
         [ Html.div
-            [ Html.Attributes.class "key-selector"]
+            [ Html.Attributes.classList
+                [ ("key-selector", True)
+                , ("is-selected", emoji == Model.defaultKey)
+                ]
+            ]
             [ Html.text emoji]
         ]
 
