@@ -5,6 +5,27 @@ import Model
 import Html
 import Html.Events
 import Html.Attributes
+import EmojiConverter
+
+translateText : Model.Model -> String
+translateText model =
+    if model.direction == Model.TextToEmoji then
+        EmojiConverter.textToEmoji Model.defaultKey model.currentText
+    else
+        EmojiConverter.emojiToText Model.defaultKey model.currentText
+
+renderKeys =
+    Html.div
+        [ Html.Attributes.class "row" ]
+        (List.map (\emoji -> renderKey emoji) EmojiConverter.supportedEmojis)
+
+renderKey emoji =
+    Html.div
+        [ Html.Attributes.class "col s2 m1 emoji-size" ]
+        [ Html.div
+            [ Html.Attributes.class "key-selector"]
+            [ Html.text emoji]
+        ]
 
 
 view : Model.Model -> Html.Html Update.Msg
@@ -37,5 +58,33 @@ view model =
                     ]
                     []
                 ]
+            ]
+        , Html.p
+            [ Html.Attributes.class "center output-text emoji-size" ]
+            [ Html.text (translateText model)]
+        , Html.div
+            [ Html.Attributes.class "switch center"]
+            [ Html.label
+                []
+                [ Html.text "Translate Text"
+                , Html.input
+                    [ Html.Attributes.type_ "checkbox"]
+                    []
+                , Html.span
+                    [ Html.Attributes.class "lever"
+                    , Html.Events.onClick Update.ToggleDirection]
+                    []
+                , Html.text "Translate Emoji"
+                ]
+            ]
+        , Html.div
+            [ Html.Attributes.class "divider" ]
+            []
+        , Html.section
+            [ Html.Attributes.class "container" ]
+            [ Html.h4
+                [ Html.Attributes.class "center" ]
+                [ Html.text "Select Your Key" ]
+            , renderKeys
             ]
         ]
